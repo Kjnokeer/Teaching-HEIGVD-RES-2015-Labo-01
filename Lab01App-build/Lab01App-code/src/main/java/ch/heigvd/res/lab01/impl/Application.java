@@ -168,7 +168,7 @@ public class Application implements IApplication {
              * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
              */
             try {
-               writer.write(file.getAbsolutePath());
+               writer.write(file.getPath() + "\n");
             } catch (IOException ex) {
                Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
             }
