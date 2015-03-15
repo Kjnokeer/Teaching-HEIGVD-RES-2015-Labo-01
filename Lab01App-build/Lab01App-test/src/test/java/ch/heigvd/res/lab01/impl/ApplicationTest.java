@@ -63,78 +63,95 @@ public class ApplicationTest {
          assertTrue(matcher.matches());
       }
    }
-  
-  @Test
-  public void theApplicationShouldBeAbleToGenerateTheListOfFileNames() throws IOException {
-    Application app = new Application();
-    app.clearOutputDirectory();
-    
-    String rootDirectory = Application.WORKSPACE_DIRECTORY;
-    FileUtils.deleteDirectory(new File(rootDirectory));
-    new File(rootDirectory).mkdir();
 
-    String dirA = rootDirectory + "/A";
-    String fileA1 = dirA + "/file1.txt";
-    String fileA2 = dirA + "/file2.txt";
-    String dirB = rootDirectory + "/A/B";
-    String dirC = rootDirectory + "/A/C";
-    String fileC1 = dirC + "/file1.txt";
-    String dirD = rootDirectory + "/A/C/D";
-    String fileD1 = dirD + "/file1.txt";
-    String fileD2 = dirD + "/file2.txt";
-    new File(dirA).mkdirs();
-    new File(dirB).mkdirs();
-    new File(dirC).mkdirs();
-    new File(dirD).mkdirs();
-    new File(fileA1).createNewFile();
-    new File(fileA2).createNewFile();
-    new File(fileC1).createNewFile();
-    new File(fileD1).createNewFile();
-    new File(fileD2).createNewFile();
-    
-    StringWriter writer = new StringWriter();
-    app.printFileNames(writer);
-    String output = writer.toString();
-    StringBuilder sb = new StringBuilder();
-    
-    sb.append(rootDirectory);
-    sb.append("\n");
-    sb.append(dirA);
-    sb.append("\n");
-    sb.append(fileA1);
-    sb.append("\n");
-    sb.append(fileA2);
-    sb.append("\n");
-    sb.append(dirB);
-    sb.append("\n");
-    sb.append(dirC);
-    sb.append("\n");
-    sb.append(fileC1);
-    sb.append("\n");
-    sb.append(dirD);
-    sb.append("\n");
-    sb.append(fileD1);
-    sb.append("\n");
-    sb.append(fileD2);
-    sb.append("\n");
-    
-    // Bug fix in the original unit test by teacher
-    String fileSeparator = File.separator;
-    if (fileSeparator.equals("\\")) {
-      fileSeparator = "\\\\";
-    }
-    Pattern p = Pattern.compile(fileSeparator);
-    Matcher m = p.matcher(output);
-    String outputWithUnixSeparator = m.replaceAll("/");
-    
-    String reference = sb.toString();
-    boolean applicationReturnsValidPlatformSpecificFilePaths = (reference.equals(output));
-    boolean applicationReturnsValidUnixFilePaths = (reference.equals(outputWithUnixSeparator));
-    boolean applicationReturnsValidFilePaths = (applicationReturnsValidPlatformSpecificFilePaths || applicationReturnsValidUnixFilePaths);
-    
-    assertTrue(applicationReturnsValidFilePaths);
+   @Test
+   public void theApplicationShouldGenerateTheCorrectNumberOfOutputFiles() {
+      String[] extensions = {"out"};
+      Collection<File> files = FileUtils.listFiles(new File(Application.WORKSPACE_DIRECTORY), new IOFileFilter() {
 
-  }
-  
+         @Override
+         public boolean accept(File file) {
+            return file.getName().endsWith(".utf8.out");
+         }
+
+         @Override
+         public boolean accept(File dir, String file) {
+            return file.endsWith(".utf8.out");
+         }
+      }, TrueFileFilter.INSTANCE);
+      assertEquals(NUMBER_OF_QUOTES, files.size());
+   }
+
+   @Test
+   public void theApplicationShouldBeAbleToGenerateTheListOfFileNames() throws IOException {
+      Application app = new Application();
+      app.clearOutputDirectory();
+
+      String rootDirectory = Application.WORKSPACE_DIRECTORY;
+      FileUtils.deleteDirectory(new File(rootDirectory));
+      new File(rootDirectory).mkdir();
+
+      String dirA = rootDirectory + "/A";
+      String fileA1 = dirA + "/file1.txt";
+      String fileA2 = dirA + "/file2.txt";
+      String dirB = rootDirectory + "/A/B";
+      String dirC = rootDirectory + "/A/C";
+      String fileC1 = dirC + "/file1.txt";
+      String dirD = rootDirectory + "/A/C/D";
+      String fileD1 = dirD + "/file1.txt";
+      String fileD2 = dirD + "/file2.txt";
+      new File(dirA).mkdirs();
+      new File(dirB).mkdirs();
+      new File(dirC).mkdirs();
+      new File(dirD).mkdirs();
+      new File(fileA1).createNewFile();
+      new File(fileA2).createNewFile();
+      new File(fileC1).createNewFile();
+      new File(fileD1).createNewFile();
+      new File(fileD2).createNewFile();
+
+      StringWriter writer = new StringWriter();
+      app.printFileNames(writer);
+      String output = writer.toString();
+      StringBuilder sb = new StringBuilder();
+
+      sb.append(rootDirectory);
+      sb.append("\n");
+      sb.append(dirA);
+      sb.append("\n");
+      sb.append(fileA1);
+      sb.append("\n");
+      sb.append(fileA2);
+      sb.append("\n");
+      sb.append(dirB);
+      sb.append("\n");
+      sb.append(dirC);
+      sb.append("\n");
+      sb.append(fileC1);
+      sb.append("\n");
+      sb.append(dirD);
+      sb.append("\n");
+      sb.append(fileD1);
+      sb.append("\n");
+      sb.append(fileD2);
+      sb.append("\n");
+
+      // Bug fix in the original unit test by teacher
+      String fileSeparator = File.separator;
+      if (fileSeparator.equals("\\")) {
+         fileSeparator = "\\\\";
+      }
+      Pattern p = Pattern.compile(fileSeparator);
+      Matcher m = p.matcher(output);
+      String outputWithUnixSeparator = m.replaceAll("/");
+
+      String reference = sb.toString();
+      boolean applicationReturnsValidPlatformSpecificFilePaths = (reference.equals(output));
+      boolean applicationReturnsValidUnixFilePaths = (reference.equals(outputWithUnixSeparator));
+      boolean applicationReturnsValidFilePaths = (applicationReturnsValidPlatformSpecificFilePaths || applicationReturnsValidUnixFilePaths);
+
+      assertTrue(applicationReturnsValidFilePaths);
+
+   }
 
 }
