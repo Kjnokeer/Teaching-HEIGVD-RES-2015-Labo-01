@@ -20,19 +20,6 @@ public class Utils {
     * not contain any line separator, then the first element is an empty string.
     */
    public static String[] getNextLine(String lines) {
-      //return lines.split("\\b(\\r?\\n)");
-
-      /*String[] tmp = lines.split("(?=\\n\\r)|(?=\\n)");
-       System.out.println(tmp.length);
-       return tmp;*/
-      /*StringTokenizer tmp = new StringTokenizer(lines, "\r\n");
-       ArrayList<String> tmp2 = new ArrayList<String>();
-       while (tmp.hasMoreElements()) {
-       tmp2.add(tmp.nextToken());
-       }
-       String[] simpleArray = new String[tmp2.size()];
-       return tmp2.toArray(simpleArray);*/
-      //return lines.split("\\r?\\n", 2);
       int length = lines.length();
       char c;
       for (int i = 0; i < length; i++) {
